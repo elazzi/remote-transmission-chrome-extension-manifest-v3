@@ -1,0 +1,1 @@
+# remote-transmission-chrome-extension-manifest-v3
