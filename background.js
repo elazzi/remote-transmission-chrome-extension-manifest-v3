@@ -20,24 +20,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ success: true });
   }
 });
-  // Add declarative net request rules
-  chrome.declarativeNetRequest.updateDynamicRules({
-    addRules: [
-      {
-        id: 1,
-        priority: 1,
-        action: { type: "redirect", redirect: { extensionPath: "/intercept.html" }},
-        condition: { urlFilter: "magnet:*", resourceTypes: ["main_frame"] }
-      },
-      {
-        id: 2,
-        priority: 1,
-        action: { type: "redirect", redirect: { extensionPath: "/intercept.html" }},
-        condition: { urlFilter: "*://*/*.torrent", resourceTypes: ["main_frame"] }
-      }
-    ],
-    removeRuleIds: [1, 2]
-  });
 });
 
 // Handle clicks on context menu items
