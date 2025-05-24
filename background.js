@@ -14,11 +14,15 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'linkClicked') {
-		console.log(message)
-		console.log('Link clicked:', message.url);
-		handleTorrentLink(message.url)
-    sendResponse({ success: true });
+    // console.log(message); // Removed
+    // console.log('Link clicked:', message.url); // Removed
+    handleTorrentLink(message.url);
+    sendResponse({ success: true, message: "Link processed by background script." });
   }
+  // Return true if you intend to use sendResponse asynchronously.
+  // In this case, handleTorrentLink is called, and then sendResponse is called.
+  // If handleTorrentLink itself were to use sendResponse asynchronously, returning true here would be necessary.
+  // For this specific structure, it's implicitly synchronous before sendResponse.
 });
 });
 
