@@ -1,6 +1,6 @@
 [
   {
-    "id": "redirect_magnet_links",
+    "id": 1,
     "priority": 1,
     "action": {
       "type": "redirect",
