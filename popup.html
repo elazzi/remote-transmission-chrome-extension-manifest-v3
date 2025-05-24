@@ -1,22 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Transmission Remote Control</title>
-    <script src="popup.js" defer></script>
+    <title>Ongoing Torrents - Transmission</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            width: 350px; /* Adjusted width for better layout */
+            padding: 10px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        #header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+        #header h1 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        #settings-button {
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+        }
+        #settings-button:hover {
+            background-color: #0056b3;
+        }
+        #torrents-container {
+            /* Basic styling for the container */
+        }
+        #loading-message {
+            text-align: center;
+            color: #777;
+            font-style: italic;
+        }
+        .torrent-entry {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 8px;
+        }
+        .torrent-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #0056b3;
+        }
+        .torrent-status, .torrent-speed, .torrent-eta {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 3px;
+        }
+        .torrent-progress {
+            margin-bottom: 5px;
+        }
+        .torrent-progress progress {
+            width: 70%;
+            margin-right: 5px;
+        }
+        .torrent-progress span {
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <label for="serverUrl">Server URL:</label>
-        <input type="text" id="serverUrl" />
+    <div id="header">
+        <h1>Ongoing Torrents</h1>
+        <button id="settings-button">Settings</button>
     </div>
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" />
+    <div id="torrents-container">
+        <p id="loading-message">Loading torrents...</p>
+        <!-- Torrent entries will be dynamically added here by popup.js -->
     </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" />
-    </div>
-    <button id="save">Save</button>
+    <script src="popup.js" defer></script>
 </body>
 </html>
