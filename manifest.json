@@ -10,9 +10,8 @@
     "webNavigation",
 	"contextMenus",
     "notifications",
-    "declarativeNetRequest", 
-    "declarativeNetRequestFeedback",
-	"tabs"  ],
+	"tabs"
+  ],
   "host_permissions": [
     "http://*/*",
     "https://*/*"
@@ -28,6 +27,10 @@
       "128": "icons/icon128.png"
     }
   },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -41,7 +44,9 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "js": ["content-script.js"],
+      "run_at": "document_idle",
+      "all_frames": false
     }
   ]
 }

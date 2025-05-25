@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Transmission Settings</title>
+    <link rel="stylesheet" href="options.css"> <!-- Optional: recommend creating a basic options.css -->
+</head>
+<body>
+    <h1>Transmission Settings</h1>
+    <div>
+        <label for="serverUrl">Server URL:</label>
+        <input type="text" id="serverUrl" placeholder="e.g., http://host:port/transmission/rpc" style="width: calc(100% - 22px); padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"/>
+        <p style="font-size: 0.85em; color: #555; margin-top: 5px;">
+            Enter your Transmission server's address.
+        </p>
+    </div>
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" />
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" />
+    </div>
+    <button id="save">Save Settings</button>
+    <p id="status-message" style="display:none;"></p>
+    <script src="options.js" defer></script>
+</body>
+</html>
