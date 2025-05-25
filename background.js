@@ -14,15 +14,26 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'linkClicked') {
-    // console.log(message); // Removed as per previous subtasks
-    // console.log('Link clicked:', message.url); // Removed as per previous subtasks
-    handleTorrentLink(message.url);
-    sendResponse({ success: true, message: "Link processed by background script." });
+  if (message.action === "handleMagnetLink" && message.magnetLink) {
+    console.log('Background: Received handleMagnetLink action with URL:', message.magnetLink); // Added log
+    handleTorrentLink(message.magnetLink); // Existing function to add torrent
+
+    // Acknowledge receipt to the content script.
+    // This doesn't wait for handleTorrentLink to fully complete.
+    sendResponse({ status: "success", message: "Magnet link received by background script for processing." });
+
+    // Return true here if sendResponse might be called later (e.g. after an async operation within handleTorrentLink)
+    // For now, sendResponse is called synchronously after initiating handleTorrentLink.
+    // However, good practice if there's any doubt or future refactoring.
+    return true; // Indicate that sendResponse will be called (even if it's "synchronously" in this turn of the event loop)
   }
-  // Return true if you intend to use sendResponse asynchronously.
-  // For this specific structure, it's implicitly synchronous before sendResponse is called.
-  return false; // Explicitly return false if not using sendResponse asynchronously from this listener
+  // Optional: handle other message types if any in the future
+  // else if (message.type === 'someOtherType') { ... }
+
+  // If no specific message is handled, and sendResponse isn't called,
+  // it's often good practice to return undefined or false (or nothing)
+  // to avoid keeping the message channel open unnecessarily if not returning true.
+  // However, if there's only one message type, the return true for that type is key.
 });
 
 // Handle clicks on context menu items
