@@ -38,16 +38,35 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 // Function to handle adding torrent link to Transmission
 function handleTorrentLink(url) {
   chrome.storage.sync.get(['serverUrl', 'username', 'password'], (items) => {
-    const serverUrl = items.serverUrl;
+    const rawServerUrl = items.serverUrl; // User-provided server URL
     const username = items.username;
     const password = items.password;
 
-    if (!serverUrl || !username) { // Password can be empty for some setups
+    if (!rawServerUrl || !username) { // Password can be empty for some setups
       console.error('Transmission server URL or username not set. Please configure in options.');
       showBadge('cfg', [255, 165, 0, 255]); // Orange for config error
       showNotification('Configuration Error', 'Server URL or username not set.');
       return;
     }
+
+    // Construct the RPC endpoint URL intelligently
+    let rpcEndpoint = rawServerUrl;
+    if (rpcEndpoint) { // Ensure rpcEndpoint is not null or empty after assignment
+        // Remove trailing slash(es) if any
+        while (rpcEndpoint.endsWith('/')) {
+            rpcEndpoint = rpcEndpoint.substring(0, rpcEndpoint.length - 1);
+        }
+
+        // Check if path already ends with /rpc or /transmission/rpc
+        if (!rpcEndpoint.endsWith('/rpc') && !rpcEndpoint.endsWith('/transmission/rpc')) {
+            rpcEndpoint += '/transmission/rpc';
+        }
+    } else { // Should not happen if !rawServerUrl check above is robust
+        console.error('Critical: rpcEndpoint became undefined or empty after processing rawServerUrl. Aborting fetch.');
+        showNotification('Configuration Error', 'Invalid server URL processed.');
+        return;
+    }
+    // Now 'rpcEndpoint' is the URL to use in fetch calls.
 
     chrome.storage.local.get(['sessionId'], (sessionItems) => {
       const headers = new Headers({
@@ -58,7 +77,7 @@ function handleTorrentLink(url) {
         headers.set('X-Transmission-Session-Id', sessionItems.sessionId);
       }
 
-      fetch(serverUrl + '/transmission/rpc', {
+      fetch(rpcEndpoint, { // Use the new rpcEndpoint
         method: 'POST',
         headers: headers,
         body: JSON.stringify({
@@ -74,7 +93,7 @@ function handleTorrentLink(url) {
             chrome.storage.local.set({ sessionId: newSessionId });
             headers.set('X-Transmission-Session-Id', newSessionId); // Update headers for retry
             // Retry the fetch with the new session ID
-            return fetch(serverUrl + '/transmission/rpc', {
+            return fetch(rpcEndpoint, { // Use the new rpcEndpoint
               method: 'POST',
               headers: headers, // Use updated headers
               body: JSON.stringify({
