@@ -40,9 +40,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === 'downloadWithTransmission') {
     const url = info.linkUrl;
-    if (url && (url.startsWith("magnet:") || url.endsWith(".torrent"))) {
+    
       handleTorrentLink(url);
-    }
+    
   }
 });
 
