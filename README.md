@@ -1,4 +1,4 @@
-# remote-transmission-chrome-extension-manifest-v3   github copilot test
+# remote-transmission-chrome-extension-manifest-v3
 
 Steps to Test the Extension
 Ensure the manifest.json, background.js, content.js, popup.html, and popup.js files are in the extension directory.
